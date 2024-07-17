@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../services/data.service';
-import { CategoryWord } from '../../models/gamemodel';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DataService} from '../../services/data.service';
+import {CategoryWord} from '../../models/gamemodel';
 
 @Component({
   selector: 'app-play',
@@ -16,6 +16,10 @@ export class PlayComponent implements OnInit {
   hiddenIndices: boolean[] = [];
   isMenuOpen: boolean = false;
   keyStates: { char: string; color: string }[] = [];
+  hasWon: boolean = false;
+  hasLost: boolean = false;
+  wrongGuessCount: number = 0;
+  maxWrongGuesses: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,6 +56,10 @@ export class PlayComponent implements OnInit {
           this.hiddenIndices = this.getHiddenIndices(
             this.randomItemWord.length
           );
+          this.maxWrongGuesses = this.hiddenIndices.filter(hidden => hidden).length;
+          console.log('Random item:', this.randomItemWord);
+          console.log('Hidden indices:', this.hiddenIndices);
+          console.log('Max wrong guesses:', this.maxWrongGuesses);
           // console.log('Random item:', this.randomItemWord);
         }
       },
@@ -93,8 +101,12 @@ export class PlayComponent implements OnInit {
 
   pressChar(char: string) {
     console.log("Char pressed:", char);
+
+    // Find hidden chars based on the hidden one
     const hiddenChars = this.randomItemWord.filter((_, index) => this.hiddenIndices[index]);
     console.log('Hidden chars:', hiddenChars);
+
+    // Check char is in the hidden chars
     const isTrue = hiddenChars.includes(char);
 
     this.keyStates = this.keyStates.map(keyState => {
@@ -106,7 +118,12 @@ export class PlayComponent implements OnInit {
 
     if (isTrue) {
       this.showHiddenChar(char);
+    } else {
+      this.wrongGuessCount++;
+      this.maxWrongGuesses--;
+      this.checkLose();
     }
+
 
     console.log('Key states:', this.keyStates);
   }
@@ -115,5 +132,26 @@ export class PlayComponent implements OnInit {
     this.hiddenIndices = this.hiddenIndices.map((hidden, index) => {
       return hidden && this.randomItemWord[index] === char ? false : hidden;
     });
+
+    this.checkWin();
   }
+
+  checkWin() {
+    if (this.hiddenIndices.every(index => !index)) {
+      this.hasWon = true;
+      console.log("You win!");
+    }
+  }
+
+  checkLose() {
+    if (this.wrongGuessCount >= this.maxWrongGuesses) {
+      this.hasLost = true;
+      console.log("You lose!");
+    }
+  }
+
+  getWidth(): string {
+    return `${this.maxWrongGuesses * 10}%`;
+  }
+
 }
