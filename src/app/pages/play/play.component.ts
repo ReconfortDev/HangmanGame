@@ -10,7 +10,7 @@ import { CategoryWord } from '../../models/gamemodel';
 })
 export class PlayComponent implements OnInit {
   gameCategory: string | null = '';
-  keyboardChars: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  keyboardChars: string[] = 'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase().split('');
   randomItem: CategoryWord | undefined;
   randomItemWord: string[] = [];
   hiddenIndices: boolean[] = [];
@@ -50,9 +50,10 @@ export class PlayComponent implements OnInit {
       (item) => {
         this.randomItem = item;
         if (this.randomItem) {
-          this.randomItemWord = this.randomItem.name.split('');
+          this.randomItemWord = this.randomItem.name.toLocaleUpperCase().split('');
           this.hiddenIndices = this.getHiddenIndices(this.randomItemWord.length);
-          this.maxWrongGuesses = this.hiddenIndices.filter((hidden) => hidden).length;
+          // this.maxWrongGuesses = this.hiddenIndices.filter((hidden) => hidden).length;
+          this.maxWrongGuesses = 8;
         }
       },
       (error) => {
@@ -81,6 +82,22 @@ export class PlayComponent implements OnInit {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  playAgain(){
+      this.randomItem = undefined;
+      this.randomItemWord = [];
+      this.hiddenIndices = [];
+      this.keyStates = this.keyboardChars.map((char) => ({ char, color: 'bg-white' }));
+      this.hasWon = false;
+      this.hasLost = false;
+      this.wrongGuessCount = 0;
+      this.maxWrongGuesses = 8;
+
+      // Fetch a new random item based on the game category
+      if (this.gameCategory) {
+        this.fetchRandomItem(this.gameCategory);
+      }
+  }
+
   restart() {
     this.router.navigate(['/start']);
   }
@@ -90,8 +107,10 @@ export class PlayComponent implements OnInit {
   }
 
   pressChar(char: string) {
+    console.log(char)
     const hiddenChars = this.randomItemWord.filter((_, index) => this.hiddenIndices[index]);
     const isCorrectGuess = hiddenChars.includes(char);
+    console.log(hiddenChars)
 
     this.keyStates = this.keyStates.map((keyState) => {
       if (keyState.char === char) {
