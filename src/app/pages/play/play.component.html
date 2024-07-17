@@ -1,0 +1,103 @@
+<div
+  class="bg-[#1c115279] w-screen h-screen flex justify-center items-start md:items-center"
+>
+  <div class="w-[80vw] py-4 flex flex-col  gap-12 md:gap-32 mt-8 md:-mt-20">
+    <!-- Header -->
+    <div class="w-full flex justify-between items-center gap-12">
+      <div class="flex items-center gap-4 mg:gap-12">
+        <button
+          (click)="toggleMenu()"
+          class="bg-gradient-to-b from-[#FE71FE] to-[#7199FF] w-12 md:w-16 h-12 md:h-16 flex items-center justify-center rounded-full border-[#887AFD] border border-b-8 border-x-2 duration-75 hover:scale-105 active:scale-95"
+        >
+          <img src="/assets/images/icon-menu.svg" class="w-6" />
+        </button>
+        <h1 class="text-3xl md:text-5xl font-medium text-white">
+          {{ gameCategory }}
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-2 md:gap-5">
+        <div
+          class="w-32 md:w-40 rounded-full border-2 border-white flex justify-end items-center"
+        >
+          <div class="bg-white rounded-full h-4 w-[30%]"></div>
+        </div>
+        <img src="/assets/images/icon-heart.svg" class="w-10" />
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="w-full h-[70vh] flex flex-col items-center justify-between gap-12 md:gap-32">
+      <div class="w-full flex gap-4 flex-wrap justify-center items-center">
+        <div
+          *ngFor="let randomChar of randomItemWord; let i = index"
+          class="bg-[#2463FF] text-white text-2xl md:text-4xl text-center rounded-xl md:rounded-3xl uppercase w-12 md:w-16 h-12 md:h-16 flex justify-center items-center border-b-4 border-[#140E66] shadow-xl"
+          [ngClass]="{ 'bg-[#2463FF]/20': hiddenIndices[i] }"
+        >
+          {{ hiddenIndices[i] ? " " : randomChar }}
+        </div>
+      </div>
+      <div class="w-full lg:w-[60%] grid grid-cols-9 gap-4 ">
+        <div
+          *ngFor="let keyState of keyStates"
+          (click)="pressChar(keyState.char)"
+          [ngClass]="
+            keyState.color +
+            ' text-xl xl:text-4xl text-center py-2 md:py-4 p-4 rounded-xl md:rounded-3xl uppercase duration-100 active:scale-[0.90] active:rounded-full border-b-4'
+          "
+        >
+          {{ keyState.char }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="w-screen h-screen absolute flex justify-center items-center top-0 left-0 bg-[#1c115279]"
+  *ngIf="isMenuOpen"
+>
+  <div class="border-b-8 border-[#140E66] rounded-[14%]">
+    <fieldset
+      class="w-[90vw] md:w-[60vw] lg:w-[40vw] xl:w-[30vw] h-[90vw] md:h-[60vw] lg:h-[40vw] xl:h-[30vw] bg-rectangleBg rounded-[12%] bg-no-repeat bg-center flex flex-col justify-center items-center gap-12 lg:gap-16 lg:-mt-32 border-t-8 border-[#2463FF]"
+    >
+      <legend class="w-full flex justify-center items-center">
+        <img
+          src="/assets/images/logo.svg"
+          class="h-20 lg:h-32 md:w-48 lg:w-60"
+        />
+      </legend>
+
+      <a
+        (click)="toggleMenu()"
+        class="rounded-full border-b-4 border border-[#243041] cursor-pointer duration-75 hover:scale-105 active:scale-95"
+      >
+        <div
+          class="bg-[#5B8AFF] px-12 py-4 border-t-4 border-x-2 border-[#3B74FF] rounded-full text-xl md:text-3xl text-white uppercase"
+        >
+          Continue
+        </div>
+      </a>
+      <a
+        (click)="restart()"
+        class="rounded-full border-b-4 border border-[#243041] cursor-pointer duration-75 hover:scale-105 active:scale-95"
+      >
+        <div
+          class="bg-[#5B8AFF] px-12 py-4 border-t-4 border-x-2 border-[#3B74FF] rounded-full text-xl md:text-3xl text-white uppercase"
+        >
+          NEW CATEGORY
+        </div>
+      </a>
+      <a
+        (click)="gotoHome()"
+        class="rounded-full border-b-4 border border-[#243041] cursor-pointer duration-75 hover:scale-105 active:scale-95"
+      >
+        <div
+          class="bg-gradient-to-b from-[#FE71FE] to-[#7199FF] px-12 py-4 border-t-4 border-x-2 border-[#3B74FF] rounded-full text-xl md:text-3xl text-white uppercase"
+        >
+          Quit Game
+        </div>
+      </a>
+    </fieldset>
+  </div>
+</div>
