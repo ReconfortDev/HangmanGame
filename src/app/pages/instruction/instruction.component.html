@@ -1,0 +1,27 @@
+<div class="bg-[#1c115279] w-screen h-screen flex justify-center items-center">
+  <div class="w-[70vw] h-[40vh] flex flex-col gap-6 -mt-48">
+    <div class="w-full flex p-4 justify-between items-center">
+      <button (click)="gotoHome()"
+        class="bg-gradient-to-b from-[#FE71FE] to-[#7199FF] p-4 rounded-full border-[#887AFD] border border-b-8 border-x-2 duration-75 hover:scale-105 active:scale-95"
+      >
+        <img src="/assets/images/icon-back.svg" class="w-6" />
+      </button>
+      <h1 class="text-5xl font-medium text-white font-outline-2">
+        How to Play
+      </h1>
+      <p></p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
+      <div
+        *ngFor="let instruction of instructions"
+        class="bg-white flex lg:flex-col text-center justify-center items-center w-full rounded-[40px] p-8 lg:py-16 gap-12"
+      >
+        <h1 class="text-8xl font-medium text-[#2463FF]">{{ instruction.number }}</h1>
+        <div class="w-full text-left md:text-center">
+            <h3 class="text-3xl uppercase">{{ instruction.title }}</h3>
+            <p class="text-xl lg:text-2xl text-[#887DC0]">{{ instruction.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
