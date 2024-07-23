@@ -2,13 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { CategoryWord } from '../../models/gamemodel';
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-play',
+  standalone: true,
+  imports: [
+    NgForOf,
+    NgIf
+  ],
   templateUrl: './play.component.html',
-  styleUrls: ['./play.component.css'],
+  styleUrl: './play.component.css'
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit{
   gameCategory: string | null = '';
   keyboardChars: string[] = 'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase().split('');
   randomItem: CategoryWord | undefined;
@@ -83,19 +89,19 @@ export class PlayComponent implements OnInit {
   }
 
   playAgain(){
-      this.randomItem = undefined;
-      this.randomItemWord = [];
-      this.hiddenIndices = [];
-      this.keyStates = this.keyboardChars.map((char) => ({ char, color: 'bg-white' }));
-      this.hasWon = false;
-      this.hasLost = false;
-      this.wrongGuessCount = 0;
-      this.maxWrongGuesses = 8;
+    this.randomItem = undefined;
+    this.randomItemWord = [];
+    this.hiddenIndices = [];
+    this.keyStates = this.keyboardChars.map((char) => ({ char, color: 'bg-white' }));
+    this.hasWon = false;
+    this.hasLost = false;
+    this.wrongGuessCount = 0;
+    this.maxWrongGuesses = 8;
 
-      // Fetch a new random item based on the game category
-      if (this.gameCategory) {
-        this.fetchRandomItem(this.gameCategory);
-      }
+    // Fetch a new random item based on the game category
+    if (this.gameCategory) {
+      this.fetchRandomItem(this.gameCategory);
+    }
   }
 
   restart() {

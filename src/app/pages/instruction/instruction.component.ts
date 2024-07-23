@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {NgForOf} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-instruction',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    NgForOf
+  ],
   templateUrl: './instruction.component.html',
-  styleUrl: './instruction.component.css'
 })
 export class InstructionComponent {
-
   instructions = [
     {
       number: '01',
@@ -32,6 +32,6 @@ export class InstructionComponent {
   constructor (private router: Router){}
 
   gotoHome(){
-    this.router.navigate(['/'])
+    this.router.navigate(['/home'])
   }
 }

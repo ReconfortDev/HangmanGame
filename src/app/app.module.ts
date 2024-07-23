@@ -11,15 +11,17 @@ import { PlayComponent } from './pages/play/play.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     StartComponent,
-    PlayComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    HomeComponent,
+    PlayComponent
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
